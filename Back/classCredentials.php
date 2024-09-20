@@ -9,11 +9,12 @@
             $this->usuario = $usuario;
             $this->clave = $clave;
         }
-
+        //metodo para obtener el hash del usuario
         public function getHashUsuario(): string {
             return hash('sha256', $this->usuario);
         }
 
+        //metodo para obtener el hash base de la clave
         public function getHashClaveFirst(): string {
             return hash('sha256', $this->clave);
         }

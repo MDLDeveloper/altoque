@@ -8,7 +8,7 @@
             $this->credentials = $credentials;
             $this->connectionDB = $connectionDB;
         }
-        
+        //Metodo para procesar el login
         public function login(): string|Token {
             $validation = new Validation($this->credentials, $this->connectionDB);
             $result = $validation->validate();
@@ -19,11 +19,11 @@
                 return $this->getToken($validation);
             }
         }
-
+        //Metodo para devolver el mensaje de error
         private function getError(MsgValidation $msj): string{
             return $msj->toJson();
         }
-
+        //Metodo para devolver el token
         private function getToken(Validation $validation): Token {
             return new Token($validation->getIdUser(), $this->connectionDB);
         }

@@ -16,11 +16,11 @@ class MsgValidation {
             'msg' => $this->msg
         ]);
     }
-
+    //Metodo getter para el estado
     public function getStatus(): bool {
         return $this->status;
     }
-
+    //Metodo getter para el mensaje
     public function getMsg(): string {
         return $this->msg;
     }
