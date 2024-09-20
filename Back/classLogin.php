@@ -9,23 +9,23 @@
             $this->connectionDB = $connectionDB;
         }
         
-        public function login(){
+        public function login(): string|Token {
             $validation = new Validation($this->credentials, $this->connectionDB);
             $result = $validation->validate();
 
             if(!$result->getStatus()) {
-                $this->getError($result);
+                return $this->getError($result);
             }else{
-                $this->getToken($validation);
+                return $this->getToken($validation);
             }
         }
 
-        public function getError(MsgValidation $msj): string{
+        private function getError(MsgValidation $msj): string{
             return $msj->toJson();
         }
 
-        public function getToken(Validation $validation): Token {
-            return new Token($validation->getIdUser());
+        private function getToken(Validation $validation): Token {
+            return new Token($validation->getIdUser(), $this->connectionDB);
         }
     }
 ?>  

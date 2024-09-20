@@ -21,7 +21,7 @@
                     return new MsgValidation(false, "No existe el usuario");
                 }else{
                     if(password_verify($this->claveFirst, $resultado->psw)) {
-                        $this->id_user = $resultado->id;
+                        $this->id_user = $resultado->id_credentials;
                         return  new MsgValidation(true, "Usuario validado satisfactoriamente");
                     }else{
                         return  new MsgValidation(false, "Clave incorrecta");
