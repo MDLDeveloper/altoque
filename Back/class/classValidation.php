@@ -13,7 +13,7 @@
             $this->id_user = -1;
         }
         //Metodo para validar las credenciales
-        public function validate(): MsgValidation {
+        public function validate(): MsgReturn {
             //Buscamos en la tabla de credenciales el usuario
             $query = "SELECT * FROM credentials WHERE username = '$this->usuario'";
             $resultado = $this->connectionDB->mdlquery($query);
@@ -25,19 +25,19 @@
                 if(empty($resultado)) {
                     
                     //Si el usuario no existe devolvemos un mensaje de error
-                    return new MsgValidation(false, "No existe el usuario");                
+                    return new MsgReturn(false, "No existe el usuario");                
                 }else{
                     
                     //Si el usuario existe verificamos si la clave es correcta
                     if(password_verify($this->claveFirst, $resultado[0]['psw'])) {
                         $this->id_user = $resultado[0]['id_credentials'];
-                        return  new MsgValidation(true, "Usuario validado satisfactoriamente");
+                        return  new MsgReturn(true, "Usuario validado satisfactoriamente");
                     }else{
-                        return  new MsgValidation(false, "Clave incorrecta");
+                        return  new MsgReturn(false, "Clave incorrecta");
                     }
                 }
             }else{
-                return new MsgValidation(false, "Error al conectar con la base de datos: ".$this->connectionDB->error);
+                return new MsgReturn(false, "Error al conectar con la base de datos: ".$this->connectionDB->error);
             }
         }
         //Metodo getter para el id de usuario

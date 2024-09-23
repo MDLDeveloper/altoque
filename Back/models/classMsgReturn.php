@@ -1,6 +1,6 @@
 <?php
 // Clase para procesar los mensajes de validación.
-class MsgValidation {
+class MsgReturn {
     private bool $status;
     private string $msg;
 

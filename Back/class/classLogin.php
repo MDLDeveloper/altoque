@@ -20,7 +20,7 @@
             }
         }
         //Metodo para devolver el mensaje de error
-        private function getError(MsgValidation $msj): string{
+        private function getError(MsgReturn $msj): string{
             return $msj->toJson();
         }
         //Metodo para devolver el token
