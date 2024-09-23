@@ -1,12 +1,19 @@
 <?php
-    include("classConectDB.php");
-    include("classCredentials.php");
+    //funcion para incluir las clases
+    function includeAllFillInDir(string $directory) {
+        foreach (glob($directory . '/*.php') as $file) {
+            include $file;
+        }
+    }
+    
+    //Se agregan constantes constantes
     include("env.php");
-    include("classLogin.php");
-    include("classValidation.php");
-    include("classToken.php");
-    include("classMsgValidation.php");
-    include("classRegistration.php");
+    //Se incluyen las clases
+    includeAllFillInDir(__DIR__ . "/class/");
+    //se incluyen los models
+    includeAllFillInDir(__DIR__ . "/models/");
+    //se incluyen los endpoints
+    includeAllFillInDir(__DIR__ . "/endpoints/");
 
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: Content-Type");  
