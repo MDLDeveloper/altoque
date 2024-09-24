@@ -1,70 +1,78 @@
 <?php
 class ConnectDB {
-	private $conexion;
-	public $error;
+    private $conexion;
+    public $error;
 
-	function __construct($servidor, $usuario, $clave, $base, $port) {
-		if(!$this->_connect($servidor, $usuario, $clave, $base, $port)) {
-			$this->error = $this->conexion->connect_error;
-		}
-	}
+    // Constructor: Conecta a la base de datos usando PDO
+    function __construct($servidor, $usuario, $clave, $base, $port) {
+        if (!$this->_connect($servidor, $usuario, $clave, $base, $port)) {
+            $this->error = $this->conexion->errorInfo()[2];
+        }
+    }
 
-	function __destruct() {
-		$this->conexion->close();
-	}
+    // Destructor: Cierra la conexión
+    function __destruct() {
+        $this->conexion = null;
+    }
 
-	private function _connect($servidor, $usuario, $clave, $base, $port) {
-		$this->conexion = new mysqli($servidor, $usuario, $clave, $base, $port);
-			if(!$this->conexion->connect_errno) {
-				$this->error = $this->conexion->connect_error;
-				return false;
-			}
-	}
+    // Método privado para conectar usando PDO
+    private function _connect($servidor, $usuario, $clave, $base, $port) {
+        $dsn = "mysql:host=$servidor;dbname=$base;port=$port;charset=utf8";
+        try {
+            // Establecer conexión PDO
+            $this->conexion = new PDO($dsn, $usuario, $clave);
+            // Configurar el modo de error a excepción para capturar errores correctamente
+            $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return true;
+        } catch (PDOException $e) {
+            $this->error = $e->getMessage();
+            return false;
+        }
+    }
 
-	public function prepare($query) {
+    // Iniciar una transacción
+    public function beginTransaction() {
+        $this->conexion->beginTransaction();
+    }
+
+    // Confirmar una transacción
+    public function commit() {
+        $this->conexion->commit();
+    }
+
+    // Revertir una transacción
+    public function rollBack() {
+        $this->conexion->rollBack();
+    }
+
+    // Método para preparar una consulta
+    public function prepare($query) {
         return $this->conexion->prepare($query);
     }
-	
-	public function mdlquery($query) {
-		$tipo = strtoupper(substr($query, 0,6));
 
-		switch($tipo) {
-			case 'INSERT':
-				$resultado = $this->conexion->query($query);
-				if(!$resultado) {
-					$this->error = $this->conexion->error;
-					return false;
-				} else {
-					return $this->conexion->insert_id;
-				}
-				break;
-			case 'UPDATE':
-			case 'DELETE':
-				$resultado = $this->conexion->query($query);
-				if(!$resultado) {
-					$this->error = $this->conexion->error;
-					return false;
-				} else {
-					return $this->conexion->affected_rows;
-				}
-				break;
+    // Método para ejecutar consultas (INSERT, UPDATE, DELETE, SELECT)
+    public function mdlquery($query, $params = []) {
+        try {
+            $stmt = $this->conexion->prepare($query);
+            $stmt->execute($params);
 
-			case 'SELECT':
-				$resultado = $this->conexion->query($query);
-				if(!$resultado) {
-					$this->error = $this->conexion->error;
-					return false;
-				} else {
-					$listar_datos = [];
-					while($fila = $resultado->fetch_assoc()) {
-						$listar_datos[]=$fila;
-					}
-					return $listar_datos;
-				}
+            $tipo = strtoupper(substr($query, 0, 6));
 
-				break;
-		}
-
-	}
+            switch ($tipo) {
+                case 'INSERT':
+                    return $this->conexion->lastInsertId(); // Devuelve el último ID insertado
+                case 'UPDATE':
+                case 'DELETE':
+                    return $stmt->rowCount(); // Devuelve el número de filas afectadas
+                case 'SELECT':
+                    return $stmt->fetchAll(PDO::FETCH_ASSOC); // Devuelve un array con los resultados
+                default:
+                    return false;
+            }
+        } catch (PDOException $e) {
+            $this->error = $e->getMessage();
+            return false;
+        }
+    }
 }
 ?>

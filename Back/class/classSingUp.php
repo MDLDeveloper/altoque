@@ -11,11 +11,12 @@
         //Metodo para procesar el registro
         public function singUp(): MsgReturn {
             $status = new UserVerification($this->user, $this->connectionDB);
-            if($status->verification()) {
+            $result = $status->verification();
+            if($result->getStatus()) {
                 $registration = new UserRegistration($this->user, $this->connectionDB);
                 return $registration->register();
             }else{
-                return $status->getError();
+                return $result;
             }
         }
     }
