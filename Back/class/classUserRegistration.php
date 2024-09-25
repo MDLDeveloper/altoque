@@ -29,7 +29,7 @@
                     ':numberphone' => $this->user->getNumberPhone(),
                     ':birthdate' => $this->user->getBirthdate(),
                     ':gender' => $this->user->getGender(),
-                    ':signup_date' => $currentDateTime
+                    ':signupdate' => $currentDateTime
                 ];
 
                 // Realizar query y obtener el id del usuario
@@ -37,11 +37,14 @@
 
                 // Consulta para insertar la dirección
                 $queryAddress = "INSERT INTO address (address, number, complement, id_user) 
-                                 VALUES (:address, :number, :complement, :id_user)";
+                                 VALUES (:address, :number, :complement, :country, :province, :city, :id_user)";
                 $paramsAddress = [
                     ':address' => $this->user->getAddress()->getAddress(),
                     ':number' => $this->user->getAddress()->getNumber(),
                     ':complement' => $this->user->getAddress()->getComplement(),
+                    ':country' => $this->user->getAddress()->getCountryId(),
+                    ':province' => $this->user->getAddress()->getProvinceID(),
+                    ':locality' => $this->user->getAddress()->getLocalityId(),
                     ':id_user' => $id_user
                 ];
                 $this->connectionDB->mdlquery($queryAddress, $paramsAddress);
