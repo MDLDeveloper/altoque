@@ -1,4 +1,4 @@
-<<?php
+<?php
     //Clase para representar la provincia de un usuario
     class UserProvince {
         private int $state;

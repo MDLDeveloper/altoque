@@ -1,4 +1,3 @@
-
 <?php 
     //Clase para procesar las credenciales
     class Credentials {

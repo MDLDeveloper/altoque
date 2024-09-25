@@ -57,6 +57,7 @@ $user = new UserSignUp($credentials, $name, $lastname, $email, $numberphone, $bi
 $registration = new SingUp($user, $connectionDB);
 $result = $registration->singUp();
 
+header('Content-Type: application/json');
 if ($result->getStatus()) {
     echo $result->toJson();
 } else {

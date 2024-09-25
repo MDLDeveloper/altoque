@@ -33,8 +33,9 @@ $credentials = new Credentials($username, $password);
 $login = new Login($credentials, $connectionDB);
 $result = $login->login();  
 
+header('Content-Type: application/json');
 if ($result instanceof Token) {  
-    echo $result->getToken();  
+    echo json_encode(["token" => $result->getToken()]);
 } else {
     echo $result;  
 }
