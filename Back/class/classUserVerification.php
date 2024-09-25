@@ -13,7 +13,7 @@
             $userExist = new UserExist($this->user->getCredentials()->getHashUsuario(), $this->connectionDB);
             if($userExist) {
                 $emailExist = new EmailExist($this->user->getEmail(), $this->connectionDB);
-                if($emailExist) {
+                if($emailExist->result()) {
                     return new MsgReturn(true, "El usuario puede registrarse");
                 }else{
                     return new MsgReturn(false, "El email ya existe");

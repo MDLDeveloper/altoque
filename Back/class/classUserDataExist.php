@@ -8,11 +8,10 @@
         {
             $this->data = $data;
             $this->connectionDB = $connectionDB;
-            $this->result();  // Llamada para realizar la verificación
         }
 
         // Método privado para ejecutar la consulta y verificar la existencia de los datos
-        private function result(): bool {
+        public function result(): bool {
             $resultado = $this->connectionDB->mdlquery($this->query());
             return empty($resultado);  // Devuelve false si hay resultado, true si no
         }
@@ -33,7 +32,7 @@
     class EmailExist extends UserDataExist {
         //metodo privado para ejecutar la consulta y verificar la existencia del email
         protected function query(): string {
-            return "SELECT id_user FROM users WHERE email = '$this->data'";
+            return "SELECT id_user FROM user WHERE email = '$this->data'";
         }
     }
 ?>

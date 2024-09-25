@@ -47,10 +47,10 @@ $numberphone = $data->numberphone;
 $birthdate = new DateTime($data->birthdate);
 $gender = new UserGender($data->gender);
 $country = new UserCountry($data->country);
-$state = new UserProvince($data->state);
+$state = new UserProvince($data->province);
 $locality = new UserLocality($data->locality);
 $address = new UserAddress($data->address, $data->number, $data->complement, $country, $state, $locality);
-$credentials = new Credentials($username, $password);
+$credentials = new Credentials($data->username, $data->password);
 
 $user = new UserSignUp($credentials, $name, $lastname, $email, $numberphone, $birthdate, $gender, $address, $country, $state, $locality);
 

@@ -6,7 +6,7 @@
             $this->gender = $gender;
         }
         //Metodo para obtener el género
-        public function getGenderId(): string {
+        public function getGenderId(): int {
             return $this->gender;
         }
         //Metodo para obtener el género en texto

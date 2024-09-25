@@ -20,24 +20,28 @@
                 $currentDateTime = (new DateTime())->format('Y-m-d'); 
 
                 // Consulta para insertar el usuario
-                $queryUser = "INSERT INTO users (name, lastname, email, numberphone, birthdate, gender, signup_date) 
-                              VALUES (:name, :lastname, :email, :numberphone, :birthdate, :gender, :signup_date)";
+                $queryUser = "INSERT INTO user (name, lastname, email, numberphone, birthdate, gender, singupdate) 
+                              VALUES (:name, :lastname, :email, :numberphone, :birthdate, :gender, :singupdate)";
                 $paramsUser = [
                     ':name' => $this->user->getName(),
                     ':lastname' => $this->user->getLastname(),
                     ':email' => $this->user->getEmail(),
                     ':numberphone' => $this->user->getNumberPhone(),
-                    ':birthdate' => $this->user->getBirthdate(),
-                    ':gender' => $this->user->getGender(),
-                    ':signupdate' => $currentDateTime
+                    ':birthdate' => $this->user->getBirthdate()->format('Y-m-d'),
+                    ':gender' => $this->user->getGender()->getGenderId(),
+                    ':singupdate' => $currentDateTime
                 ];
 
                 // Realizar query y obtener el id del usuario
                 $id_user = $this->connectionDB->mdlquery($queryUser, $paramsUser);
+                
+                if (!$id_user) {
+                    throw new Exception("Error al insertar el usuario :".$this->connectionDB->error);
+                }
 
                 // Consulta para insertar la dirección
-                $queryAddress = "INSERT INTO address (address, number, complement, id_user) 
-                                 VALUES (:address, :number, :complement, :country, :province, :city, :id_user)";
+                $queryAddress = "INSERT INTO address (address, number, complement, id_country, id_province, id_locality, id_user) 
+                                 VALUES (:address, :number, :complement, :country, :province, :locality, :id_user)";
                 $paramsAddress = [
                     ':address' => $this->user->getAddress()->getAddress(),
                     ':number' => $this->user->getAddress()->getNumber(),
@@ -47,7 +51,10 @@
                     ':locality' => $this->user->getAddress()->getLocality()->getLocalityId(),
                     ':id_user' => $id_user
                 ];
-                $this->connectionDB->mdlquery($queryAddress, $paramsAddress);
+                $resultAddress =$this->connectionDB->mdlquery($queryAddress, $paramsAddress);
+                if (!$resultAddress) {
+                    throw new Exception("Error al insertar la dirección :".$this->connectionDB->error);
+                }
 
                 // Hashear la contraseña
                 $password = password_hash($this->user->getCredentials()->getHashClaveFirst(), PASSWORD_DEFAULT);
@@ -60,7 +67,10 @@
                     ':psw' => $password,
                     ':id_user' => $id_user
                 ];
-                $this->connectionDB->mdlquery($queryCredentials, $paramsCredentials);
+                $resultCredentials = $this->connectionDB->mdlquery($queryCredentials, $paramsCredentials);
+                if (!$resultCredentials) {
+                    throw new Exception("Error al insertar las credenciales :".$this->connectionDB->error);
+                }
 
                 // Confirmar la transacción
                 $this->connectionDB->commit();
