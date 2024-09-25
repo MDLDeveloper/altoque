@@ -49,7 +49,7 @@ CREATE TABLE credentials (
     username VARCHAR(255) NOT NULL,
     psw VARCHAR(255) NOT NULL,
     token VARCHAR(255),
-    lastlogin DATE, -- Cambié de VARCHAR a DATE
+    lastlogin DATE, 
     id_user INTEGER NOT NULL,
     FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE
 );

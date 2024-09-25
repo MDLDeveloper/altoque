@@ -4,31 +4,52 @@ include ("../recursos.php");
 
 $data = json_decode(file_get_contents("php://input"));
 
+// Obtener datos de entrada
 if(!$data) {
     $result = new MsgReturn(false, "No se recibieron datos");
-    return $result->toJson();
+    echo $result->toJson();
+    exit;
 }
 
-if($data->name == null || $data->lastname == null || $data->email == null || $data->numberphone == null || $data->birthdate == null || $data->gender == null || $data->address == null || $data->country == null || $data->province == null || $data->locality == null) {
-    $result = new MsgReturn(false, "Faltan datos obligatorios");
-    return $result->toJson();
+// Validar campos obligatorios
+$requiredFields = ['name', 'lastname', 'email', 'numberphone', 'birthdate', 'gender', 'address', 'country', 'province', 'locality', 'username', 'password'];
+
+foreach ($requiredFields as $field) {
+    if (empty($data->$field)) {
+        $result = new MsgReturn(false, "Faltan datos obligatorios: $field");
+        echo $result->toJson();
+        exit;
+    }
 }
 
-if(gettype($data->name) !== "string" || gettype($data->lastname) !== "string" || gettype($data->email) !== "string" || gettype($data->numberphone) !== "string" || gettype($data->birthdate) !== "string" || gettype($data->gender) !== "integer" || gettype($data->address) !== "string" || gettype($data->country) !== "integer" || gettype($data->province) !== "integer" || gettype($data->locality) !== "integer") {
+// Validar tipos de datos
+if (!is_string($data->name) || !is_string($data->lastname) || !is_string($data->email) || 
+    !is_string($data->numberphone) || !is_string($data->birthdate) || 
+    !is_int($data->gender) || !is_string($data->address) || !is_int($data->country) || 
+    !is_int($data->province) || !is_int($data->locality) || !is_string($data->username) || 
+    !is_string($data->password)) {
     $result = new MsgReturn(false, "Los datos no son del tipo esperado");
-    return $result->toJson();
+    echo $result->toJson();
+    exit;
+}
+
+// Validar formato de email
+if (!filter_var($data->email, FILTER_VALIDATE_EMAIL)) {
+    $result = new MsgReturn(false, "El formato del correo electrónico es inválido");
+    echo $result->toJson();
+    exit;
 }
 
 $name = $data->name;
 $lastname = $data->lastname;
 $email = $data->email;
 $numberphone = $data->numberphone;
-$birthdate = $data->birthdate;
+$birthdate = new DateTime($data->birthdate);
 $gender = new UserGender($data->gender);
-$address = new UserAddress($data->address, $data->number, $data->complement, $data->country, $data->province, $data->locality);
 $country = new UserCountry($data->country);
 $state = new UserProvince($data->state);
 $locality = new UserLocality($data->locality);
+$address = new UserAddress($data->address, $data->number, $data->complement, $country, $state, $locality);
 $credentials = new Credentials($username, $password);
 
 $user = new UserSignUp($credentials, $name, $lastname, $email, $numberphone, $birthdate, $gender, $address, $country, $state, $locality);
@@ -37,9 +58,9 @@ $registration = new SingUp($user, $connectionDB);
 $result = $registration->singUp();
 
 if ($result->getStatus()) {
-    echo "Registro exitoso";
+    echo $result->toJson();
 } else {
-    echo $result->getMsg();
+    echo $result->toJson();
 }   
 
 ?>

@@ -9,11 +9,8 @@
         private DateTime $birthdate;
         private UserGender $gender;
         private UserAddress $address;
-        private UserCountry $country;
-        private UserProvince $state;
-        private UserLocality $locality;
             
-            function __construct(Credentials $credentials, string $name, string $lastname, string $email, string $numberphone, DateTime $birthdate, UserGender $gender, UserAddress $address, UserCountry $country, UserProvince $state, UserLocality $locality) {
+            function __construct(Credentials $credentials, string $name, string $lastname, string $email, string $numberphone, DateTime $birthdate, UserGender $gender, UserAddress $address) {
                 $this->credentials = $credentials;
                 $this->name = $name;
                 $this->lastname = $lastname;
@@ -22,9 +19,6 @@
                 $this->birthdate = $birthdate;
                 $this->gender = $gender;
                 $this->address = $address;
-                $this->country = $country;
-                $this->state = $state;
-                $this->locality = $locality;
             }
             //Metodo para obtener el nombre
             public function getName(): string {
@@ -56,15 +50,15 @@
             }
             //Metodo para obtener el país
             public function getCountry(): UserCountry {
-                return $this->country;
+                return $this->address->getCountry();
             }
             //Metodo para obtener la provincia
             public function getState(): UserProvince {
-                return $this->state;
+                return $this->address->getProvince();
             }
             //Metodo para obtener la localidad
             public function getLocality(): UserLocality {
-                return $this->locality;
+                return $this->address->getLocality();
             }
             //metodo para obetener las credenciales
             public function getCredentials(): Credentials {

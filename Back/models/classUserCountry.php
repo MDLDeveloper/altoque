@@ -6,7 +6,7 @@
             $this->country = $country;
         }
         //Metodo para obtener el país
-        public function getCountryId(): string {
+        public function getCountryId(): int {
             return $this->country;
         }
         //Metodo para obtener el país en texto

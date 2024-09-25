@@ -6,7 +6,7 @@
             $this->state = $state;
         }
         //Metodo para obtener el estado
-        public function getProvinceId(): string {
+        public function getProvinceId(): int {
             return $this->state;
         }
         

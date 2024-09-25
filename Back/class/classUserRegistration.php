@@ -42,9 +42,9 @@
                     ':address' => $this->user->getAddress()->getAddress(),
                     ':number' => $this->user->getAddress()->getNumber(),
                     ':complement' => $this->user->getAddress()->getComplement(),
-                    ':country' => $this->user->getAddress()->getCountryId(),
-                    ':province' => $this->user->getAddress()->getProvinceID(),
-                    ':locality' => $this->user->getAddress()->getLocalityId(),
+                    ':country' => $this->user->getAddress()->getCountry()->getCountryId(),
+                    ':province' => $this->user->getAddress()->getProvince()->getProvinceId(),
+                    ':locality' => $this->user->getAddress()->getLocality()->getLocalityId(),
                     ':id_user' => $id_user
                 ];
                 $this->connectionDB->mdlquery($queryAddress, $paramsAddress);

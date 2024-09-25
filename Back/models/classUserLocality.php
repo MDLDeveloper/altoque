@@ -6,7 +6,7 @@
             $this->locality = $locality;
         }
         //Metodo para obtener la localidad
-        public function getLocalityId(): string {
+        public function getLocalityId(): int {
             return $this->locality;
         }
         //Metodo para obtener la localidad en texto
