@@ -22,11 +22,18 @@ CREATE TABLE province (
     FOREIGN KEY (id_country) REFERENCES country(id_country) ON DELETE CASCADE
 );
 
-CREATE TABLE locality (
-    id_locality INTEGER PRIMARY KEY AUTO_INCREMENT, 
+CREATE TABLE departament (
+    id_departament INTEGER PRIMARY KEY AUTO_INCREMENT, 
     name VARCHAR(80) NOT NULL,
     id_province INTEGER NOT NULL,
     FOREIGN KEY (id_province) REFERENCES province(id_province) ON DELETE CASCADE
+)
+
+CREATE TABLE locality (
+    id_locality INTEGER PRIMARY KEY AUTO_INCREMENT, 
+    name VARCHAR(80) NOT NULL,
+    id_departament INTEGER NOT NULL,
+    FOREIGN KEY (id_departament) REFERENCES departament(id_departament) ON DELETE CASCADE
 );
 
 CREATE TABLE address (

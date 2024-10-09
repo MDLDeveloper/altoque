@@ -56,6 +56,9 @@
             public function getState(): UserProvince {
                 return $this->address->getProvince();
             }
+            public function getDepartament(): UserDepartament{
+                return $this->address->getDepartament();
+            }
             //Metodo para obtener la localidad
             public function getLocality(): UserLocality {
                 return $this->address->getLocality();

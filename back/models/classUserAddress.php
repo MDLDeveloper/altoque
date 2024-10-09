@@ -6,9 +6,11 @@
         private string $complement;
         private UserCountry $country;
         private UserProvince $province;
+        private UserDepartament $departament;
         private UserLocality $locality;
+    
 
-        function __construct(string $address, string $number, string $complement, UserCountry $country, UserProvince $province, UserLocality $locality) {
+        function __construct(string $address, string $number, string $complement, UserCountry $country, UserProvince $province, UserDepartament $departament, UserLocality $locality) {
             $this->country = $country;
             $this->province = $province;
             $this->locality = $locality;
@@ -36,7 +38,11 @@
         public function getProvince(): UserProvince {
             return $this->province;
         }
-        //Metodo para obtener la ciudad
+        //Metodo para obtener el departamento
+        public function getDepartament(): UserDepartament{
+            return $this->departament;
+        }
+        //Metodo para obtener la localidad
         public function getLocality(): UserLocality {
             return $this->locality;
         }

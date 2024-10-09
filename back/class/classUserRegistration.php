@@ -41,13 +41,14 @@
 
                 // Consulta para insertar la dirección
                 $queryAddress = "INSERT INTO address (address, number, complement, id_country, id_province, id_locality, id_user) 
-                                 VALUES (:address, :number, :complement, :country, :province, :locality, :id_user)";
+                                 VALUES (:address, :number, :complement, :country, :province,:departament, :locality, :id_user)";
                 $paramsAddress = [
                     ':address' => $this->user->getAddress()->getAddress(),
                     ':number' => $this->user->getAddress()->getNumber(),
                     ':complement' => $this->user->getAddress()->getComplement(),
                     ':country' => $this->user->getAddress()->getCountry()->getCountryId(),
                     ':province' => $this->user->getAddress()->getProvince()->getProvinceId(),
+                    ':departament'=> $this->user->getAddress()->getDepartament()->getDepartamentId(),
                     ':locality' => $this->user->getAddress()->getLocality()->getLocalityId(),
                     ':id_user' => $id_user
                 ];
