@@ -12,7 +12,7 @@ if(!$data) {
 }
 
 // Validar campos obligatorios
-$requiredFields = ['name', 'lastname', 'email', 'numberphone', 'birthdate', 'gender', 'address', 'country', 'province', 'locality', 'username', 'password'];
+$requiredFields = ['name', 'lastname', 'email', 'numberphone', 'birthdate', 'gender', 'address', 'country', 'departament', 'province', 'locality', 'username', 'password'];
 
 foreach ($requiredFields as $field) {
     if (empty($data->$field)) {
@@ -26,7 +26,7 @@ foreach ($requiredFields as $field) {
 if (!is_string($data->name) || !is_string($data->lastname) || !is_string($data->email) || 
     !is_string($data->numberphone) || !is_string($data->birthdate) || 
     !is_int($data->gender) || !is_string($data->address) || !is_int($data->country) || 
-    !is_int($data->province) || !is_int($data->locality) || !is_string($data->username) || 
+    !is_int($data->province) || !is_int($data->departament)|| !is_int($data->locality) || !is_string($data->username) || 
     !is_string($data->password)) {
     $result = new MsgReturn(false, "Los datos no son del tipo esperado");
     echo $result->toJson();
@@ -49,10 +49,10 @@ $gender = new UserGender($data->gender);
 $country = new UserCountry($data->country);
 $state = new UserProvince($data->province);
 $locality = new UserLocality($data->locality);
-$address = new UserAddress($data->address, $data->number, $data->complement, $country, $state, $locality);
+$address = new UserAddress($data->address, $data->number, $data->complement, $country, $state, $departament, $locality);
 $credentials = new Credentials($data->username, $data->password);
 
-$user = new UserSignUp($credentials, $name, $lastname, $email, $numberphone, $birthdate, $gender, $address, $country, $state, $locality);
+$user = new UserSignUp($credentials, $name, $lastname, $email, $numberphone, $birthdate, $gender, $address);
 
 $registration = new SingUp($user, $connectionDB);
 $result = $registration->singUp();
