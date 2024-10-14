@@ -32,6 +32,10 @@ CREATE TABLE departament (
 CREATE TABLE locality (
     id_locality INTEGER PRIMARY KEY AUTO_INCREMENT, 
     name VARCHAR(80) NOT NULL,
+    cod_uta_2020 INTEGER NOT NULL,
+    cod_uta_2010 INTEGER NOT NULL,
+    latitude DECIMAL(4,8) NOT NULL,
+    longitude DECIMAL(4,8) NOT NULL,
     id_departament INTEGER NOT NULL,
     FOREIGN KEY (id_departament) REFERENCES departament(id_departament) ON DELETE CASCADE
 );
@@ -43,11 +47,13 @@ CREATE TABLE address (
     complement VARCHAR(255),
     id_country INTEGER NOT NULL,
     id_province INTEGER NOT NULL,
+    id_departament INTEGER NOT NULL,
     id_locality INTEGER NOT NULL,
     id_user INTEGER NOT NULL,
     FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE,
     FOREIGN KEY (id_country) REFERENCES country(id_country) ON DELETE CASCADE,
     FOREIGN KEY (id_province) REFERENCES province(id_province) ON DELETE CASCADE,
+    FOREIGN Key (id_departament) REFERENCES departament(id_departament) ON DELETE CASCADE,
     FOREIGN KEY (id_locality) REFERENCES locality(id_locality) ON DELETE CASCADE
 );
 
@@ -61,38 +67,3 @@ CREATE TABLE credentials (
     FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE
 );
 
--- Datos iniciales para el país
-INSERT INTO country (name, code) VALUES ("Argentina", "ARG");
-INSERT INTO country (name, code) VALUES ("Brasil", "BRA");
-INSERT INTO country (name, code) VALUES ("Chile", "CHL");
-INSERT INTO country (name, code) VALUES ("Colombia", "COL");
-INSERT INTO country (name, code) VALUES ("Ecuador", "ECU");
-INSERT INTO country (name, code) VALUES ("Mexico", "MEX");
-INSERT INTO country (name, code) VALUES ("Peru", "PER");
-INSERT INTO country (name, code) VALUES ("Uruguay", "URU");
-
--- Datos iniciales para la provincia
-INSERT INTO province (name, id_country) VALUES ("Buenos Aires", 1);
-INSERT INTO province (name, id_country) VALUES ("Ciudad Autónoma de Buenos Aires", 1);
-INSERT INTO province (name, id_country) VALUES ("Entre Ríos", 1);
-INSERT INTO province (name, id_country) VALUES ("La Pampa", 1);
-INSERT INTO province (name, id_country) VALUES ("Mendoza", 1);
-INSERT INTO province (name, id_country) VALUES ("Neuquén", 1);
-INSERT INTO province (name, id_country) VALUES ("Río Negro", 1);
-INSERT INTO province (name, id_country) VALUES ("Salta", 1);
-INSERT INTO province (name, id_country) VALUES ("San Juan", 1);
-INSERT INTO province (name, id_country) VALUES ("San Luis", 1);
-INSERT INTO province (name, id_country) VALUES ("Santa Cruz", 1);
-INSERT INTO province (name, id_country) VALUES ("Santa Fe", 1);
-INSERT INTO province (name, id_country) VALUES ("Santiago del Estero", 1);
-INSERT INTO province (name, id_country) VALUES ("Tierra del Fuego", 1);
-INSERT INTO province (name, id_country) VALUES ("Tucumán", 1);
-
--- Datos iniciales para las ciudades
-INSERT INTO locality (name, id_province) VALUES ("La Plata", 1);
-INSERT INTO locality (name, id_province) VALUES ("Lomas de Zamora", 1);
-INSERT INTO locality (name, id_province) VALUES ("Mar del Plata", 1);
-INSERT INTO locality (name, id_province) VALUES ("San Miguel de Tucumán", 15);
-INSERT INTO locality (name, id_province) VALUES ("San Nicolás de los Arroyos", 1);
-INSERT INTO locality (name, id_province) VALUES ("Santa Teresa", 13);
-INSERT INTO locality (name, id_province) VALUES ("Tacuarembó", 15);
