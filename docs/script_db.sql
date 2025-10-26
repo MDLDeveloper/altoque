@@ -58,7 +58,7 @@ CREATE TABLE address (
 );
 
 CREATE TABLE credentials (
-    id_credentials INTEGER PRIMARY KEY AUTO_INCREMENT, 
+    id_credential INTEGER PRIMARY KEY AUTO_INCREMENT, 
     username VARCHAR(255) NOT NULL,
     psw VARCHAR(255) NOT NULL,
     token VARCHAR(255),
